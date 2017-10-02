@@ -5,7 +5,7 @@ const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
-let libraryName = 'Library';
+let libraryName = 'admin-on-dostow';
 
 let plugins = [], outputFile;
 
@@ -44,7 +44,12 @@ const config = {
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
     extensions: ['.json', '.js']
   },
-  plugins: plugins
+  plugins: plugins,
+  externals: {
+    react: 'react',
+    ramda: 'ramda',
+    'admin-on-rest': 'admin-on-rest'
+  }
 };
 
 module.exports = config;

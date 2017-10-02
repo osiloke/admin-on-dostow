@@ -1,7 +1,7 @@
 /* global describe, it, before */
 
 import chai from 'chai';
-import {Cat, Dog} from '../lib/library.js';
+import {Cat, Dog} from '../lib/admin-on-rest.js';
 
 chai.expect();
 
@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 let lib;
 
-describe('Given an instance of my Cat library', () => {
+describe('Given an instance of my Cat admin-on-rest', () => {
   before(() => {
     lib = new Cat();
   });
@@ -20,7 +20,7 @@ describe('Given an instance of my Cat library', () => {
   });
 });
 
-describe('Given an instance of my Dog library', () => {
+describe('Given an instance of my Dog admin-on-rest', () => {
   before(() => {
     lib = new Dog();
   });
