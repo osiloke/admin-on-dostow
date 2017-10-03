@@ -41,14 +41,17 @@ const config = {
     ]
   },
   resolve: {
+    alias: { 
+      react: path.resolve('node_modules/react'),
+      'react-dom': path.resolve('node_modules/react-dom'),
+    },
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
     extensions: ['.json', '.js']
   },
   plugins: plugins,
   externals: {
-    react: 'react',
-    ramda: 'ramda',
-    'admin-on-rest': 'admin-on-rest'
+    react: 'react', 
+    'react-dom': 'react-dom' 
   }
 };
 

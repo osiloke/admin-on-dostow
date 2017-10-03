@@ -1,9 +1,6 @@
 {
-  "presets": [
-    "latest",
-    "stage-2",
-    "react"
-  ],
+  "presets": ["env", "react"],
+  "plugins": ["transform-object-rest-spread"],
   "env": {
     "tests": {
       "plugins": ["babel-plugin-rewire"]
