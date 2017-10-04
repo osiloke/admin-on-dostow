@@ -133,10 +133,12 @@ export default (parseConfig, httpClient = fetchJson) => {
         switch (type) {
             case GET_LIST:
             case GET_MANY_REFERENCE:
-                return {
-                    data: json.data.map(x => ({ ...x })),
-                    total: json.total_count,
-                };
+                if (json.data && json.data.length > 0)
+                    return {
+                        data: json.data.map(x => ({ ...x })),
+                        total: json.total_count,
+                    };
+                return {data: [], total: 0}
             case CREATE:
             case GET_ONE:
             case UPDATE:
@@ -145,9 +147,12 @@ export default (parseConfig, httpClient = fetchJson) => {
                     data: { ...json },
                 };
             case GET_MANY:
-                return {
-                    data: json.data.map(x => ({ ...x })),
-                };
+                if (json.data && json.data.length > 0)
+                    return {
+                        data: json.data.map(x => ({ ...x })),
+                        total: json.total_count,
+                    };
+                return {data: [], total: 0}
             default:
                 return json;
         }
