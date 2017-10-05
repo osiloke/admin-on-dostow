@@ -9,7 +9,7 @@ import { getDisplayField } from '../Lib/Resource'
 import PropTypes from 'prop-types'
 
 const makeFilters = (storeDef) => (props) => {
-    const fields = [
+    const fields = storeDef.required && storeDef.required.length > 0 ? [
         <TextInput key="search" label="Search" source="q" alwaysOn />, ...storeDef.required.map((field) => (storeDef.properties[field]
             && storeDef.properties[field].ref) ?
             (<ReferenceInput
@@ -20,7 +20,7 @@ const makeFilters = (storeDef) => (props) => {
                 allowEmpty>
                 <SelectInput optionText={getDisplayField} />
             </ReferenceInput>) : <TextInput key={`${storeDef.name}${field}`} source={field} />
-        )]
+        )] : [<TextInput key="search" label="Search" source="q" alwaysOn />]
     return (
         <Filter {...props}>
             {fields}
@@ -32,10 +32,10 @@ const ListStore = ({ store }) => {
     const fields = store.properties ? Object.keys(store.properties) : []
     const Filters = makeFilters(store)
     return (props) => (
-        <List {...props} perPage={25} filters={<Filters store={store} />}>
+        <List {...props}  title={store.title} perPage={25} filters={<Filters store={store} />}>
             <Datagrid>
                 <FunctionField
-                    key={`${store.id}-id`}
+                    key={`${store.name}-id`}
                     label='id'
                     render={(record) => record.id.substring(0, 8)} />
                 {(fields.length > 7 ? fields.slice(0, 7) : fields).map((field) => {
