@@ -16,7 +16,7 @@ import ramda from 'ramda'
 export default ({ store }) => {
     const fields = store.properties ? Object.keys(store.properties) : []
     return props => (
-        <Create {...props} title={store.title}>
+        <Create {...props} title={`Create ${store.title || store.name}`}>
             <SimpleForm validate={validateInputForm(store)}>
                 {fields.map(field => {
                     const elem = store.properties[field]
@@ -36,7 +36,24 @@ export default ({ store }) => {
                             />
                         )
                     if (elem.ref && elem.ref.target !== '_static') {
-                        return null
+                        return (
+                            <ReferenceInput
+                                allowEmpty
+                                {...params}
+                                label={elem.title || elem.ref.target}
+                                reference={elem.ref.target}
+                            >
+                                <SelectInput
+                                    optionText={record => (
+                                        <span>
+                                            {record
+                                                ? getDisplayField(record, elem)
+                                                : 'Select a ' + field}
+                                        </span>
+                                    )}
+                                />
+                            </ReferenceInput>
+                        )
                     }
                     if (typeof elem.type === 'string') {
                         if (
@@ -47,7 +64,12 @@ export default ({ store }) => {
                         if (elem.type === 'string') {
                             if (elem.format === 'long')
                                 return <LongTextInput {...params} />
-                            return <TextInput {...params} />
+                            return (
+                                <TextInput
+                                    {...params}
+                                    {...elem.format && { type: elem.format }}
+                                />
+                            )
                         }
                         if (elem.type === 'boolean')
                             return <BooleanInput {...params} />
