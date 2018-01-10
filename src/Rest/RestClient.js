@@ -46,9 +46,6 @@ export default (parseConfig, httpClient = fetchJson) => {
                 const file = params.files[0];
                 var body = new FormData();
                 body.append(params.field, file.raw);
-                body.append('type', file.type);
-                body.append('name', file.name);
-                body.append('size', file.size);
                 options.method = 'PUT';
                 options.body = body;
                 break;
