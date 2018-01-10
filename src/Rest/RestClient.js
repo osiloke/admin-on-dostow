@@ -6,26 +6,13 @@ import {
     GET_MANY_REFERENCE,
     CREATE,
     UPDATE,
-    DELETE,
+    DELETE
 } from 'admin-on-rest/lib/rest/types';
 
 export const FUNCTION = 'FUNCTION';
-
-
-// function filterQuery(obj) {
-//     let result = {};
-//     Object.keys(obj).forEach(function (x) {
-//         if (typeof obj[x] === 'string')
-//             result[x] = { "$regex": obj[x] };
-//         else result[x] = obj[x];
-//     });
-//     if (Object.keys(result).length > 0)
-//         return JSON.stringify(result);
-//     return null;
-// }
+export const UPLOAD_FILE = 'UPLOAD_FILE';
 
 export default (parseConfig, httpClient = fetchJson) => {
-
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
@@ -38,28 +25,55 @@ export default (parseConfig, httpClient = fetchJson) => {
         // const token = localStorage.getItem('parseToken')
 
         let options = {};
-        options.headers = new Headers({ Accept: 'application/json', Authorization: 'bearer ' + localStorage.getItem('token') });
-        parseConfig['GROUP'] && options.headers.set('X-DOSTOW-GROUP', parseConfig['GROUP']);
-        parseConfig['KEY'] && options.headers.set('X-DOSTOW-GROUP-ACCESS-KEY', parseConfig['KEY']);
-        parseConfig['AUTH'] && options.headers.set('Authorization', parseConfig['AUTH']);
-
-        // if (token !== null) {
-        //     options.headers.set('X-Parse-Session-Token', token);
-        // }
-
+        options.headers = new Headers({
+            Accept: 'application/json',
+            Authorization: 'bearer ' + localStorage.getItem('token')
+        });
+        parseConfig['GROUP'] &&
+            options.headers.set('X-DOSTOW-GROUP', parseConfig['GROUP']);
+        parseConfig['KEY'] &&
+            options.headers.set(
+                'X-DOSTOW-GROUP-ACCESS-KEY',
+                parseConfig['KEY']
+            );
+        parseConfig['AUTH'] &&
+            options.headers.set('Authorization', parseConfig['AUTH']);
         switch (type) {
+            case UPLOAD_FILE: {
+                url = `${parseConfig.URL}/upload/${resource}/${params.id}/${
+                    params.field
+                }`;
+                const file = params.files[0];
+                var body = new FormData();
+                body.append(params.field, file.raw);
+                body.append('type', file.type);
+                body.append('name', file.name);
+                body.append('size', file.size);
+                options.method = 'PUT';
+                options.body = body;
+                break;
+            }
             case GET_LIST: {
-                const page = (params.pagination && params.pagination.page != null) ? params.pagination.page : 1;
-                const perPage = (params.pagination && params.pagination.perPage != null) ? params.pagination.perPage : 10;
+                const page =
+                    params.pagination && params.pagination.page != null
+                        ? params.pagination.page
+                        : 1;
+                const perPage =
+                    params.pagination && params.pagination.perPage != null
+                        ? params.pagination.perPage
+                        : 10;
                 // const field = (params.sort && params.sort.field != null) ? params.sort.field : "created_at";
-                // const order = (params.sort && params.sort.order != null) ? params.sort.order : "ASC"; 
-                const filter = params.filter || null//(params.filter != null) ? filterQuery(params.filter) : null;
-                const include = (params.include != null) ? params.include.replace(/\s/g, "") : null;
+                // const order = (params.sort && params.sort.order != null) ? params.sort.order : "ASC";
+                const filter = params.filter || null; //(params.filter != null) ? filterQuery(params.filter) : null;
+                const include =
+                    params.include != null
+                        ? params.include.replace(/\s/g, '')
+                        : null;
                 const query = {
                     size: perPage,
                     // order: (order === "DESC" ? "-" + field : field),
                     // limit: perPage,
-                    skip: (page - 1) * perPage,
+                    skip: (page - 1) * perPage
                 };
                 if (include != null) {
                     query.include = include;
@@ -67,34 +81,46 @@ export default (parseConfig, httpClient = fetchJson) => {
                 if (filter != null) {
                     query.where = filter;
                 }
-                url = `${parseConfig.URL}/store/${resource}?${queryParameters(query)}`;
+                url = `${parseConfig.URL}/store/${resource}?${queryParameters(
+                    query
+                )}`;
                 break;
             }
             case GET_ONE:
                 url = `${parseConfig.URL}/store/${resource}/${params.id}`;
                 break;
             case GET_MANY: {
-                url = `${parseConfig.URL}/store/${resource}?hash=${params.ids.join('|')}`
+                url = `${
+                    parseConfig.URL
+                }/store/${resource}?hash=${params.ids.join('|')}`;
                 break;
             }
             case GET_MANY_REFERENCE: {
-                const page = (params.pagination && params.pagination.page != null) ? params.pagination.page : 10;
-                const perPage = (params.pagination && params.pagination.perPage != null) ? params.pagination.perPage : 10;
+                const page =
+                    params.pagination && params.pagination.page != null
+                        ? params.pagination.page
+                        : 10;
+                const perPage =
+                    params.pagination && params.pagination.perPage != null
+                        ? params.pagination.perPage
+                        : 10;
                 // const field = (params.sort && params.sort.field != null) ? params.sort.field : "created_at";
                 // const order = (params.sort && params.sort.order != null) ? params.sort.order : "ASC";
                 const query = {
                     // order: (order === "DESC" ? "-" + field : field),
                     size: perPage,
-                    skip: (page - 1) * perPage,
+                    skip: (page - 1) * perPage
                     // where: JSON.stringify({ [params.target]: params.id }),
                 };
-                url = `${parseConfig.URL}/store/${resource}?${queryParameters(query)}`;
+                url = `${parseConfig.URL}/store/${resource}?${queryParameters(
+                    query
+                )}`;
                 break;
             }
             case UPDATE:
                 url = `${parseConfig.URL}/store/${resource}/${params.id}`;
                 options.method = 'PUT';
-                options.headers.set('Content-Type', 'application/json')
+                options.headers.set('Content-Type', 'application/json');
                 delete params.data.id;
                 delete params.data.created_at;
                 delete params.data.updated_at;
@@ -102,7 +128,7 @@ export default (parseConfig, httpClient = fetchJson) => {
                 break;
             case CREATE:
                 url = `${parseConfig.URL}/store/${resource}`;
-                options.headers.set('Content-Type', 'application/json')
+                options.headers.set('Content-Type', 'application/json');
                 options.method = 'POST';
                 options.body = JSON.stringify(params.data);
                 break;
@@ -135,18 +161,18 @@ export default (parseConfig, httpClient = fetchJson) => {
             case GET_MANY_REFERENCE:
                 return {
                     data: json.data.map(x => ({ ...x })),
-                    total: json.total_count,
+                    total: json.total_count
                 };
             case CREATE:
             case GET_ONE:
             case UPDATE:
             case DELETE:
                 return {
-                    data: { ...json },
+                    data: { ...json }
                 };
             case GET_MANY:
                 return {
-                    data: json.data.map(x => ({ ...x })),
+                    data: json.data.map(x => ({ ...x }))
                 };
             default:
                 return json;
@@ -160,8 +186,13 @@ export default (parseConfig, httpClient = fetchJson) => {
      * @returns {Promise} the Promise for a REST response
      */
     return (type, resource, params) => {
-        const { url, options } = convertRESTRequestToHTTP(type, resource, params);
-        return fetchJson(url, options)
-            .then(response => convertHTTPResponseToREST(response, type, resource, params));
+        const { url, options } = convertRESTRequestToHTTP(
+            type,
+            resource,
+            params
+        );
+        return fetchJson(url, options).then(response =>
+            convertHTTPResponseToREST(response, type, resource, params)
+        );
     };
-}
+};

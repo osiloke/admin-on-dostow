@@ -4,10 +4,11 @@ const webpack = require('webpack');
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
+var PeerDepsExternalsPlugin = require('peer-deps-externals-webpack-plugin');
 
 let libraryName = 'admin-on-dostow';
 
-let plugins = [], outputFile;
+let plugins = [new PeerDepsExternalsPlugin()], outputFile;
 
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));

@@ -4,12 +4,14 @@ export const fetchJson = (url, options = {}) => {
     const requestHeaders = options.headers;
 
     return fetch(url, { ...options, headers: requestHeaders })
-        .then(response => response.text().then(text => ({
-            status: response.status,
-            statusText: response.statusText,
-            headers: response.headers,
-            body: text,
-        })))
+        .then(response =>
+            response.text().then(text => ({
+                status: response.status,
+                statusText: response.statusText,
+                headers: response.headers,
+                body: text
+            }))
+        )
         .then(({ status, statusText, headers, body }) => {
             let json;
             try {
@@ -28,13 +30,15 @@ export const fetchJson = (url, options = {}) => {
 };
 
 export const queryParameters = data => {
-    let whereKeys = []
+    let whereKeys = [];
     if (data.where) {
-        whereKeys = Object.keys(data.where)
-            .map(key => [key, data.where[key]].map(encodeURIComponent).join('='))
-        delete data.where
+        whereKeys = Object.keys(data.where).map(key =>
+            [key, data.where[key]].map(encodeURIComponent).join('=')
+        );
+        delete data.where;
     }
-    const keys = Object.keys(data)
-        .map(key => [key, data[key]].map(encodeURIComponent).join('='))
-    return whereKeys.concat(keys).join('&')
+    const keys = Object.keys(data).map(key =>
+        [key, data[key]].map(encodeURIComponent).join('=')
+    );
+    return whereKeys.concat(keys).join('&');
 };
