@@ -1,4 +1,4 @@
-import { UPLOAD_FILE } from './RestClient';
+import { UPLOAD_FILE } from "./RestClient";
 /**
  * Convert a `File` object returned by the upload input into
  * a base 64 string. That's easier to use on FakeRest, used on
@@ -29,7 +29,7 @@ export const addUploadCapabilities = (stores, requestHandler) => {
         for (var ii = 0; ii < propKeys.length; ii++) {
             const name = propKeys[ii];
             const field = store.properties[name];
-            if (field.ref && field.ref.target === 'static') {
+            if (field.ref && field.ref.target === "static") {
                 if (!storeWithStatic[store.name]) {
                     storeWithStatic[store.name] = [{ ...field, name }];
                 } else {
@@ -39,27 +39,35 @@ export const addUploadCapabilities = (stores, requestHandler) => {
         }
     }
     return (type, resource, params) => {
-        // const curStore = storeNameSchema[resource];
-        if (type === 'UPDATE') {
+        if (type === "UPDATE") {
             const fields = storeWithStatic[resource];
+            console.log(params);
             if (fields) {
                 for (var i = 0; i < fields.length; i++) {
                     const field = fields[i];
                     const fieldName = field.name;
-                    if (params.data[fieldName]) {
+                    const fileData = params.data[fieldName];
+                    delete params.data[fieldName];
+                    if (fileData) {
                         // check if static field is available
                         // only freshly dropped files are instance of File
-                        const formerFiles = params.data[fieldName].filter(
-                            p => !(p instanceof File)
+                        const formerFiles = fileData.filter(
+                            p => !(p.rawFile instanceof File)
                         );
-                        const newFiles = params.data[fieldName].filter(
-                            p => p instanceof File
+                        const newFiles = fileData.filter(
+                            p => p.rawFile instanceof File
                         );
-
+                        console.log(formerFiles, newFiles);
+                        if (formerFiles.length > 0) {
+                            delete params.data[fieldName];
+                            continue;
+                        }
+                        if (formerFiles.length === 0 && newFiles.length === 0) {
+                            delete params.data[fieldName];
+                            continue;
+                        }
                         return Promise.all(
-                            params.data[fieldName].map(f =>
-                                convertFileToBase64(f.rawFile)
-                            )
+                            fileData.map(f => convertFileToBase64(f.rawFile))
                         )
                             .then(base64Files =>
                                 base64Files.map(({ file64, file }) => ({

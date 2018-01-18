@@ -1,5 +1,5 @@
 {
-  "presets": ["env", "react"],
+  "presets": ["env", "es2015", "stage-0", "react"],
   "plugins": ["transform-object-rest-spread"],
   "env": {
     "tests": {
