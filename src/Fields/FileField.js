@@ -14,7 +14,7 @@ export const FileField = ({ elStyle, record, source, src }) => {
             <ul style={elStyle}>
                 {sourceValue.map((file, index) => {
                     const titleValue = get(file, 'id') + get(file, '_e');
-                    const srcValue = get(file, src) || title;
+                    // const srcValue = get(file, src) || title;
                     return (
                         <li key={index}>
                             <a href={get(file, 'url')} title={titleValue}>
