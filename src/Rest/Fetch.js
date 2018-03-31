@@ -30,7 +30,9 @@ export const fetchJson = (url, options = {}) => {
 };
 
 export const queryParameters = data => {
-  const where = data.where ? [`q=${JSON.stringify(data.where)}`] : [];
+  const where = data.where
+    ? [`q=${encodeURIComponent(JSON.stringify(data.where))}`]
+    : [];
   delete data.where;
   const keys = Object.keys(data).map(key =>
     [key, data[key]].map(encodeURIComponent).join("=")
