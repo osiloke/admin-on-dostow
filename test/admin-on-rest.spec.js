@@ -1,7 +1,7 @@
 /* global describe, it, before */
 
 import chai from 'chai';
-import {Cat, Dog} from '../lib/admin-on-rest.js';
+import {Cat, Dog} from '../lib/react-admin.js';
 
 chai.expect();
 
@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 let lib;
 
-describe('Given an instance of my Cat admin-on-rest', () => {
+describe('Given an instance of my Cat react-admin', () => {
   before(() => {
     lib = new Cat();
   });
@@ -20,7 +20,7 @@ describe('Given an instance of my Cat admin-on-rest', () => {
   });
 });
 
-describe('Given an instance of my Dog admin-on-rest', () => {
+describe('Given an instance of my Dog react-admin', () => {
   before(() => {
     lib = new Dog();
   });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     List,
     Datagrid,
@@ -14,9 +14,9 @@ import {
     EditButton,
     ReferenceField,
     DeleteButton
-} from 'admin-on-rest';
-import { getDisplayField } from '../Lib/Resource';
-import PropTypes from 'prop-types';
+} from "react-admin";
+import { getDisplayField } from "../Lib/Resource";
+// import PropTypes from "prop-types";
 
 const makeFilters = storeDef => props => {
     const fields = [
@@ -34,11 +34,11 @@ const makeFilters = storeDef => props => {
                         <SelectInput optionText={getDisplayField} />
                     </ReferenceInput>
                 ) : (
-                    <TextInput
-                        key={`${storeDef.name}${field}`}
-                        source={field}
-                    />
-                )
+                        <TextInput
+                            key={`${storeDef.name}${field}`}
+                            source={field}
+                        />
+                    )
         )
     ];
     return <Filter {...props}>{fields}</Filter>;
@@ -67,7 +67,7 @@ const ListStore = ({ store }) => {
                             key: `${store.id}-${field}`,
                             source: field
                         };
-                        if (elem.type === 'object')
+                        if (elem.type === "object")
                             return (
                                 <FunctionField
                                     {...params}
@@ -88,7 +88,7 @@ const ListStore = ({ store }) => {
                                             const included = record[field];
                                             if (included) {
                                                 if (
-                                                    elem.ref.target === 'static'
+                                                    elem.ref.target === "static"
                                                 ) {
                                                     return (
                                                         <a
@@ -97,7 +97,7 @@ const ListStore = ({ store }) => {
                                                             }
                                                         >{`${included[0].id}${
                                                             included[0]._e
-                                                        }`}</a>
+                                                            }`}</a>
                                                     );
                                                 }
                                                 return (
@@ -113,47 +113,78 @@ const ListStore = ({ store }) => {
                                         }}
                                     />
                                 );
+                            } else {
+                                return (
+                                    <ReferenceField
+                                        {...params}
+                                        reference={elem.ref.target}
+                                    >
+                                        <FunctionField
+                                            render={record => (
+                                                <span>
+                                                    {getDisplayField(record, elem)}
+                                                </span>
+                                            )}
+                                        />
+                                    </ReferenceField>
+                                );
                             }
-                            return (
-                                <ReferenceField
-                                    {...params}
-                                    reference={elem.ref.target}
-                                >
-                                    <FunctionField
-                                        render={record => (
-                                            <span>
-                                                {getDisplayField(record, elem)}
-                                            </span>
-                                        )}
-                                    />
-                                </ReferenceField>
-                            );
+                            // return (
+                            //     <FunctionField
+                            //         render={record => (
+                            //             <span>
+                            //                 {getDisplayField(record, elem)}
+                            //             </span>
+                            //         )}
+                            //     />
+                            // );
                         }
-                        if (field === 'created_at') {
+                        if (field === "created_at") {
                             return <DateField {...params} source={field} />;
                         }
-                        if (typeof elem.type === 'string') {
-                            if (elem.type === 'string') {
+                        if (typeof elem.type === "string") {
+                            if (elem.type === "string") {
                                 return <TextField {...params} source={field} />;
                             }
-                            if (elem.type === 'boolean')
+                            if (elem.type === "boolean")
                                 return (
                                     <BooleanField {...params} source={field} />
                                 );
                             if (
-                                elem.type === 'number' ||
-                                elem.type === 'float' ||
-                                elem.type === 'integer'
+                                elem.type === "number" ||
+                                elem.type === "float" ||
+                                elem.type === "integer"
                             )
                                 return (
                                     <NumberField {...params} source={field} />
                                 );
                         }
+                        // return (
+                        //     <TextField
+                        //         key={params.key}
+                        //         {...params}
+                        //         source={field}
+                        //     />
+                        // );
                         return (
-                            <TextField
-                                key={params.key}
-                                {...params}
-                                source={field}
+                            <FunctionField
+                                key={`${store.id}-id`}
+                                render={record => {
+                                    if (typeof record == "string") {
+                                        return (
+                                            <TextField
+                                                key={params.key}
+                                                {...params}
+                                                source={field}
+                                            />
+                                        );
+                                    }
+                                    return (
+                                        <span>
+                                            {getDisplayField(record, elem)}
+                                        </span>
+                                    );
+                                }}
                             />
                         );
                     }

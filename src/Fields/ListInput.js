@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import FieldTitle from 'admin-on-rest';
+import FieldTitle from 'react-admin';
 
 /**
  * An Input component for a string
@@ -47,7 +47,7 @@ export class ListInput extends Component {
         } = this.props;
         if (typeof meta === 'undefined') {
             throw new Error(
-                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/admin-on-rest/Inputs.html#writing-your-own-input-component for details."
+                "The TextInput component wasn't called within a redux-form <Field>. Did you decorate it and forget to add the addField prop to your component? See https://marmelab.com/react-admin/Inputs.html#writing-your-own-input-component for details."
             );
         }
         const { touched, error } = meta;

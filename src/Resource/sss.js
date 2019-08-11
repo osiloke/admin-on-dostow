@@ -1,5 +1,5 @@
 import React from 'react'
-import { List, Datagrid, TextField, TextInput, Filter, ReferenceInput, SelectInput, NumberField, BooleanField, ReferenceField, DateField, FunctionField, EditButton } from 'admin-on-rest'
+import { List, Datagrid, TextField, TextInput, Filter, ReferenceInput, SelectInput, NumberField, BooleanField, ReferenceField, DateField, FunctionField, EditButton } from 'react-admin'
 import { getDisplayField } from '../Lib/Resource'
 import PropTypes from 'prop-types'
 

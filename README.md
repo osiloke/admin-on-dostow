@@ -1,6 +1,6 @@
 # admin-on-dostow
 
-A helper module for using admin-on-rest with dostow api
+A helper module for using react-admin with dostow api
 
 ## Features
 

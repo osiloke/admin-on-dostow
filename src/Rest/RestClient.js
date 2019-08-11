@@ -7,12 +7,12 @@ import {
     CREATE,
     UPDATE,
     DELETE
-} from 'admin-on-rest/lib/rest/types';
+} from 'react-admin';
 
 export const FUNCTION = 'FUNCTION';
 export const UPLOAD_FILE = 'UPLOAD_FILE';
 
-export default (parseConfig, httpClient = fetchJson) => {
+export default (parseConfig) => {
     /**
      * @param {String} type One of the constants appearing at the top if this file, e.g. 'UPDATE'
      * @param {String} resource Name of the resource to fetch, e.g. 'posts'
@@ -151,7 +151,7 @@ export default (parseConfig, httpClient = fetchJson) => {
      * @param {Object} params The REST request params, depending on the type
      * @returns {Object} REST response
      */
-    const convertHTTPResponseToREST = (response, type, resource, params) => {
+    const convertHTTPResponseToREST = (response, type) => {
         const { json } = response;
         switch (type) {
             case GET_LIST:

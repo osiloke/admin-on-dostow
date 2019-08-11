@@ -9,7 +9,7 @@ import {
     TextInput,
     DateInput,
     LongTextInput
-} from 'admin-on-rest';
+} from 'react-admin';
 import { getDisplayField, validateInputForm } from '../Lib/Resource';
 import ramda from 'ramda';
 

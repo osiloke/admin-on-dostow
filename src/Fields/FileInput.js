@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 
-import FileInputPreview from 'admin-on-rest/lib/mui/input/FileInputPreview';
-import translate from 'admin-on-rest/lib/i18n/translate';
+import FileInputPreview from 'react-admin/lib/mui/input/FileInputPreview';
+import translate from 'react-admin/lib/i18n/translate';
 
 const defaultStyle = {
     dropZone: {

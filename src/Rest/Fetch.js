@@ -1,5 +1,3 @@
-import HttpError from "admin-on-rest/lib/util/HttpError";
-
 export const fetchJson = (url, options = {}) => {
   const requestHeaders = options.headers;
 
@@ -20,10 +18,10 @@ export const fetchJson = (url, options = {}) => {
         // not json, no big deal
       }
       if (status === 400) {
-        return Promise.reject(new HttpError(json.msg, json.code));
+        return Promise.reject(new Error(json.msg, json.code));
       }
       if (status === 401) {
-        return Promise.reject(new HttpError(json.msg, json.code));
+        return Promise.reject(new Error(json.msg, json.code));
       }
       return { status, headers, body, json };
     });
