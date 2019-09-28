@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import FieldTitle from 'react-admin';
+import {TextField, FieldTitle} from 'react-admin';
 
 /**
  * An Input component for a string

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { shallowEqual } from 'recompose';
 import Dropzone from 'react-dropzone';
 
-import FileInputPreview from 'react-admin/lib/mui/input/FileInputPreview';
-import translate from 'react-admin/lib/i18n/translate';
+import { FileInputPreview, translate } from 'react-admin';
 
 const defaultStyle = {
     dropZone: {
@@ -45,7 +44,7 @@ export class FileInput extends Component {
         labelMultiple: 'aor.input.file.upload_several',
         labelSingle: 'aor.input.file.upload_single',
         multiple: false,
-        onUpload: () => {},
+        onUpload: () => { },
         removeStyle: { display: 'inline-block' }
     };
 

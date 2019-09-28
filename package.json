@@ -1,8 +1,8 @@
 {
   "name": "admin-on-dostow",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Produce universal library with webpack and es6",
-  "main": "lib/admin-on-dostow.js",
+  "main": "lib/admin-on-dostow.min.js",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
@@ -12,6 +12,7 @@
   "dependencies": {
     "lodash.get": "^4.4.2",
     "ramda": "^0.24.1",
+    "react-dropzone": "^10.1.9",
     "react-redux": "^5.0.6",
     "recompose": "^0.26.0"
   },
